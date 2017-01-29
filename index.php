@@ -1,27 +1,26 @@
 <?php
+  // connection string
+  $dsn = 'mysql:host=localhost;dbname=gamedb';
+  $userName = 'dasha';
+  $password = '12345';
 
-$dsn = 'mysql:host=localhost;dbname=gamedb';
-$userName = 'dasha';
-$password = '12345';
+  // exception handling - use a try / catch
+  try {
+    // instantiates a new pdo - an db object
+    $db = new PDO($dsn, $userName, $password);
+  } 
+  catch(PDOException $e) {
+    $message = $e->getMessage();
+    echo "An error occurred: " . $message;
+  }
 
-try {
-  $db = new PDO($dsn, $userName, $password);
-} 
-catch(PDOException $e) {
-  $message = $e->getMessage();
-  echo "An error occurred: " . $message;
-}
-
-$query = "SELECT * FROM games";
-$statement = $db->prepare($query);
-$statement->execute(); // run on the db server
-$games = $statement->fetchAll(); // returns an array
-$statement->closeCursor();
-
-
-
-
+  $query = "SELECT * FROM games"; // SQL statement
+  $statement = $db->prepare($query); // encapsulate the sql statement
+  $statement->execute(); // run on the db server
+  $games = $statement->fetchAll(); // returns an array
+  $statement->closeCursor();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,7 +43,7 @@ $statement->closeCursor();
           <?php
           foreach($games as $game) {
             echo '<li>';
-            echo $game[0] . " " . $game[1] . " " . $game['Cost'];
+            echo $game['Id'] . " " . $game['Name'] . " " . $game['Cost'];
             echo '</li>';
           }
           ?>
